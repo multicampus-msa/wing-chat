@@ -2,12 +2,11 @@ node {
          stage('Clone repository') {
              checkout scm
          }
-         stage('yarn build') {
+         stage('npm build') {
             env.NODEJS_HOME = "${tool 'nodejs'}"
          	env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
 
-            sh 'yarn install'
-            sh 'yarn build'
+            sh 'npm install'
          }
      stage('Build & Push image') {
           docker.withRegistry('https://registry.hub.docker.com', 'midaslmg94-docker') {
