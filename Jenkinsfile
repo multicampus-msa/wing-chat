@@ -2,13 +2,13 @@ node {
      stage('Clone repository') {
          checkout scm
      }
-     stage('chmod') {
-         sh 'chmod +x gradlew'
+     tools {nodejs "node"}
+     stage('yarn build') {
+         sh 'npm install -g yarn'
+         sh 'yarn install'
+         sh 'yarn build'
      }
-     stage('Gradle Build') {
-         sh './gradlew bootjar'
-         sh 'cp /var/lib/jenkins/workspace/wing-chat/build/libs/*.jar ./'
-     }
+
      stage('Build & Push image') {
           docker.withRegistry('https://registry.hub.docker.com', 'midaslmg94-docker') {
              def image = docker.build("midaslmg94/wing-chat:latest")
